@@ -1,0 +1,13 @@
+{application, qri,
+ [
+  {description, "Server sent event for Orderry"},
+  {vsn, "0.1"},
+  {registered, [qri_sup]},
+  {applications, [
+                  kernel,
+                  stdlib,
+                  cowboy
+                 ]},
+  {mod, { qri_app, []}},
+  {env, [{http_port, 8000}]}
+ ]}.

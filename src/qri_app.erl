@@ -8,9 +8,14 @@ get_port() ->
     {_, Port} = application:get_env(http_port),
     Port.
 
-start() ->
-    lager:start(),
+get_routes() ->
+    [
+        {'_', [
+            {"/stream", qri_emitter, []}
+        ]}
+    ].
 
+start() ->
     application:start(crypto),
     application:start(ranch),
     application:start(cowlib),
@@ -19,13 +24,16 @@ start() ->
 
 start(_StartType, _StartArgs) ->
     Port = get_port(),
-    Routes = routing:routes(),
+    Routes = get_routes(),
     Dispatch = cowboy_router:compile(Routes),
     TransOpts = [{port, Port}],
     ProtoOpts = [{env, [{dispatch, Dispatch}]}],
 
+    % Creating ETS table named peers for further mapping: Peer => PID.
+    ets:new(peers, [set, public, named_table, {keypos, 1}]),
+
     cowboy:start_http(http, ?C_ACCEPTORS, TransOpts, ProtoOpts),
-    lager:info("Starting at port ~p", [Port]),
+    io:format("Starting at port ~p\n", [Port]),
 
     qri_sup:start_link().
 

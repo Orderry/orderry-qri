@@ -1,57 +1,69 @@
 -module(qri_peer).
 
--export([
-    generate_tick_id/0,
-    parse_id/1,
-    has_peer/1,
-    get_pid/1,
-    remove/1,
-    register/2
-]).
+-export([generate_tick_id/0]).
+-export([parse_qs/1]).
+-export([get_pid/1]).
+-export([remove/1]).
+-export([register/2]).
 
--define(C_PEER, "peer").
+-define(C_KEY, "key").
+-define(C_POS_PEER, 1).
+-define(C_POS_CHECKSUM, 2).
+-define(C_POS_PID, 3).
 
 is_valid_checksum(Checksum, Element) ->
-    % Element should be a tuple of {Peer, PID, Checksum}.
-    Checksum =:= element(3, Element).
+    % Element should be a tuple of {Peer, Checksum, PID}.
+    Checksum =:= element(?C_POS_CHECKSUM, Element).
 
 generate_tick_id() ->
     {Mega, Sec, Micro} = erlang:now(),
     Id = (Mega * 1000000 + Sec) * 1000000 + Micro,
     integer_to_list(Id, 16).
 
-parse_id(Req) ->
+parse_qs(Req) ->
     QsVals = cowboy_req:parse_qs(Req),
-    Tuple = lists:keyfind(<<?C_PEER>>, 1, QsVals),
+    Tuple = lists:keyfind(<<?C_KEY>>, 1, QsVals),
 
     case Tuple of
         false ->
             undefined;
 
-        {_, Peer} ->
-            Peer
+        {_, Key} ->
+            Checksum = erlang:crc32(Key),
+            {Key, Checksum}
     end.
-
-has_peer({Peer, Checksum}) ->
-    {peer, {Peer, Checksum}}.
 
 %% Return PID which is assigned to the given Peer, or returns undefined if Peer
 %%  does not exists or has an invalid Checksum.
+get_pid(undefined) -> undefined;
 get_pid({Peer, Checksum}) ->
     [Element] = ets:lookup(peers, Peer),
     IsValidChecksum = is_valid_checksum(Checksum, Element),
 
     case IsValidChecksum of
         true ->
-            element(2, Element);
+            element(?C_POS_PID, Element);
 
         false ->
             undefined
-
     end.
 
-remove({Peer, Checksum}) ->
-    {peer, {Peer, Checksum}}.
+remove(undefined) -> ok;
+remove({Peer, _Checksum}) -> ets:delete(peers, Peer).
 
+register(undefined, PID) -> PID;
 register({Peer, Checksum}, PID) ->
-    ets:insert(peers, {Peer, PID, Checksum}).
+    IsMember = ets:member(peers, Peer),
+    IsValidChecksum = is_valid_checksum(Checksum, {Peer, Checksum}),
+
+    if
+        IsMember == false ->
+            ets:insert(peers, {Peer, Checksum, PID}),
+            PID;
+
+        IsMember /= IsValidChecksum ->
+            PID;
+
+        IsMember == IsValidChecksum ->
+            get_pid({Peer, Checksum})
+    end.

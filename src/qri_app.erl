@@ -2,7 +2,7 @@
 -behaviour(application).
 -export([start/0, start/2, stop/1]).
 
--define(C_ACCEPTORS, 100).
+-define(C_ACCEPTORS, 5000).
 
 get_port() ->
     {_, Port} = application:get_env(http_port),

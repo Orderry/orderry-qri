@@ -1,5 +1,11 @@
 CCZE_EXISTS=$(shell [ -x "/usr/bin/ccze" ] && echo 1 || echo 0 )
 DEPS_EXISTS=$(shell [ -d "deps" ] && echo 1 || echo 0)
+UNAME_S=$(shell uname -s)
+INSTALLER=apt-get install -y
+
+ifeq ($(UNAME_S), Darwin)
+	INSTALLER=brew install
+endif
 
 
 _help_:
@@ -17,7 +23,7 @@ ifeq ($(CCZE_EXISTS), 1)
 	@echo "==> ok."
 else
 	@echo "==> Need to install ccze for proper displaing of the logs"
-	sudo apt-get install -y ccze
+	sudo $(INSTALLER) ccze
 endif
 
 ifeq ($(DEPS_EXISTS), 1)

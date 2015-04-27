@@ -9,5 +9,10 @@
                   cowboy
                  ]},
   {mod, { qri_app, []}},
-  {env, [{http_port, 8000}]}
+  {env,
+    [
+      {http_port, 8000},
+      {socket_port, 5679}
+    ]
+  }
  ]}.

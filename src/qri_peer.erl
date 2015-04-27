@@ -11,6 +11,7 @@
 -define(C_POS_CHECKSUM, 2).
 -define(C_POS_PID, 3).
 
+
 is_valid_checksum(_Checksum, undefined) -> false;
 is_valid_checksum(Checksum, Element) ->
     % Element should be a tuple of {Peer, Checksum, PID}.

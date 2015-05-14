@@ -14,10 +14,9 @@
 loop(Socket) ->
     case gen_tcp:recv(Socket, 0) of
         {ok, Data} ->
-            % Testing data.
-            PIDs = qri_peer:get_pids({<<"123">>, 2286445522}),
-            [PID ! {message, Data} || PID <- PIDs],
-            io:format(">>> Data: ~p ~p\n", [Data, PIDs]),
+            {Peer, Checksum, Message} = binary_to_term(Data),
+            PIDs = qri_peer:get_pids({Peer, Checksum}),
+            [PID ! {message, Message} || PID <- PIDs],
             loop(Socket);
 
         {error, closed} ->

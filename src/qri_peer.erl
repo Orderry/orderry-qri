@@ -6,7 +6,8 @@
 -export([remove/1]).
 -export([register/2]).
 
--define(C_KEY, "key").
+-define(C_KEY, "p").
+-define(C_CHECKSUM, "s").
 -define(C_POS_PEER, 1).
 -define(C_POS_CHECKSUM, 2).
 -define(C_POS_PID, 3).
@@ -24,15 +25,20 @@ generate_tick_id() ->
 
 parse_qs(Req) ->
     QsVals = cowboy_req:parse_qs(Req),
-    Tuple = lists:keyfind(<<?C_KEY>>, 1, QsVals),
+    Key = lists:keyfind(<<?C_KEY>>, 1, QsVals),
+    Checksum = lists:keyfind(<<?C_CHECKSUM>>, 1, QsVals),
 
-    case Tuple of
-        false ->
+    if
+        Key == false ->
             undefined;
 
-        {_, Key} ->
-            Checksum = erlang:crc32(Key),
-            {Key, Checksum}
+        Checksum == false ->
+            undefined;
+
+        (Key /= false) and (Checksum /= false)->
+            %% Get values of the query string.
+            %% p=123&s=uniq => {"123", "uniq"}
+            {element(2, Key), element(2, Checksum)}
     end.
 
 %% Return PID which is assigned to the given Peer, or returns undefined if Peer

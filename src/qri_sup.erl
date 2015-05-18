@@ -14,7 +14,7 @@
 loop(Socket) ->
     case gen_tcp:recv(Socket, 0) of
         {ok, Data} ->
-            {Peer, Checksum, Message} = binary_to_term(Data),
+            {ok, [Peer, Checksum, Message]} = msgpack:unpack(Data),
             PIDs = qri_peer:get_pids({Peer, Checksum}),
             [PID ! {message, Message} || PID <- PIDs],
             loop(Socket);

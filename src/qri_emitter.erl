@@ -9,7 +9,9 @@ init(Req, Opts) ->
 
     Headers = [
         {<<"content-type">>, <<"text/event-stream">>},
-        {<<"Cache-Control">>, <<"no-cache">>}
+        {<<"Cache-Control">>, <<"no-cache">>},
+        {<<"access-control-allow-origin">>, <<"*">>},
+        {<<"access-control-allow-methods">>, <<"*">>}
     ],
     Req2 = cowboy_req:chunked_reply(200, Headers, Req),
 

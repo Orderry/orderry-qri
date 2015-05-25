@@ -12,7 +12,14 @@
   {env,
     [
       {http_port, 8000},
-      {socket_port, 5679}
+      {socket_port, 5679},
+
+      {uri, ""},
+      {project, "qri"},
+      {public_key, ""},
+      {private_key, ""},
+      {error_logger, true},
+      {ipfamily, inet}
     ]
   }
- ]}.
+]}.

@@ -46,4 +46,4 @@ init([]) ->
 
     listen(),
 
-    {ok, { {one_for_one, 2, 5}, []} }.
+    {ok, { {one_for_one, 5, 10}, []} }.

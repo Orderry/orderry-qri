@@ -1,6 +1,6 @@
 {application, qri,
  [
-  {description, "Server sent event for Orderry"},
+  {description, "Qri: server sent events for Orderry"},
   {vsn, "0.1"},
   {registered, [qri_sup]},
   {applications, [

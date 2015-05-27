@@ -5,7 +5,7 @@
 -define(C_ACCEPTORS, 5000).
 -define(ROUTES, [
     {'_', [
-        {"/stream", qri_emitter, []}
+        {"/stream", qri_handler, []}
     ]}
 ]).
 

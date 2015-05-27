@@ -1,4 +1,4 @@
--module(qri_emitter).
+-module(qri_handler).
 
 -export([init/2, info/3, terminate/3]).
 

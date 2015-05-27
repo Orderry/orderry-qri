@@ -11,12 +11,40 @@
 -define(TCP_OPTIONS, [binary, {packet, 0}, {active, false}, {reuseaddr, true}]).
 
 
+unpack(Data) ->
+    {Body, Rest} = msgpack:unpack_stream(Data),
+
+    case Rest of
+        not_just_binary ->
+            error;
+
+        incomplete ->
+            error;
+
+        {badarg, _} ->
+            error;
+
+        <<>> ->
+            Body;
+
+        _ ->
+            {Body, Rest}
+    end.
+
+emitter([Peer, Checksum, Message]) ->
+    PIDs = qri_peer:get_pids({Peer, Checksum}),
+    [PID ! {message, Message} || PID <- PIDs].
+
+courier(error) -> ok;
+courier([Peer, Checksum, Message]) -> emitter([Peer, Checksum, Message]);
+courier({Body, Rest}) ->
+    emitter(Body),
+    courier(unpack(Rest)).
+
 loop(Socket) ->
     case gen_tcp:recv(Socket, 0) of
         {ok, Data} ->
-            {ok, [Peer, Checksum, Message]} = msgpack:unpack(Data),
-            PIDs = qri_peer:get_pids({Peer, Checksum}),
-            [PID ! {message, Message} || PID <- PIDs],
+            courier(unpack(Data)),
             loop(Socket);
 
         {error, closed} ->

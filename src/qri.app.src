@@ -12,7 +12,7 @@
   {env,
     [
       {http_port, 80},
-      {socket_port, 5679},
+      {socket_port, 5679}
     ]
   }
 ]}.

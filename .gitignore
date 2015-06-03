@@ -2,7 +2,8 @@
 .erlang.cookie
 
 log
-rel
+rel/qri
+rel/files
 deps
 ebin
 

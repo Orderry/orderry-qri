@@ -7,6 +7,7 @@ The purpose for creating this library was the need to support data synchronizati
 Read more about other Qri components:
 
 1. [JS interface](https://github.com/Orderry/qri-js);
+2. [Python lib](https://github.com/Orderry/qri-py);
 
 Infrastructure
 ==============

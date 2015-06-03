@@ -17,7 +17,3 @@ ifeq ($(DEPS_EXISTS), 1)
 else
 	rebar get-deps
 endif
-
-release:
-	rebar get-deps compile
-	cd rel && rebar generate

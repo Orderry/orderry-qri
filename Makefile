@@ -5,6 +5,7 @@ UNAME_S=$(shell uname -s)
 _help_:
 	@echo make clean - clean project
 	@echo make update - update all project deps
+	@echo make release - build QRI release
 
 
 clean:
@@ -16,3 +17,7 @@ ifeq ($(DEPS_EXISTS), 1)
 else
 	rebar get-deps
 endif
+
+release:
+	rebar get-deps compile
+	cd rel && rebar generate

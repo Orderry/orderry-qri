@@ -11,7 +11,7 @@
   {mod, { qri_app, []}},
   {env,
     [
-      {http_port, 8080},
+      {http_port, 80},
       {socket_port, 5679},
 
       {uri, ""},

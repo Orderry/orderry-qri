@@ -13,7 +13,6 @@ start() ->
     application:start(raven),
     application:start(crypto),
     application:start(ranch),
-    application:start(cowlib),
     application:start(cowboy),
     application:start(qri).
 

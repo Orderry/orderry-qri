@@ -3,7 +3,7 @@
 -export([generate_tick_id/0]).
 -export([parse_qs/1]).
 -export([get_pids/1]).
--export([remove/1]).
+-export([remove/2]).
 -export([register/2]).
 
 -define(C_KEY, "p").
@@ -65,8 +65,17 @@ get_pids({_Peer, Checksum}, Element) ->
             element(?C_POS_PID, Element)
     end.
 
-remove(undefined) -> ok;
-remove({Peer, _Checksum}) -> ets:delete(peers, Peer).
+remove(undefined, _PID) -> ok;
+remove({Peer, Checksum}, PID) ->
+    Stored = get_pids({Peer, Checksum}),
+    Updated = lists:delete(PID, Stored),
+    case Updated of
+        [] ->
+            ets:delete(peers, Peer);
+
+        _Else ->
+            ets:insert(peers, {Peer, Checksum, Updated})
+    end.
 
 register(undefined, PID) -> [PID];
 register({Peer, Checksum}, PID) ->

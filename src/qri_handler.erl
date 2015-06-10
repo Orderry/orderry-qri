@@ -31,5 +31,5 @@ info({message, Msg}, Req, State) ->
     {ok, Req, State}.
 
 terminate(_Reason, Req, _State) ->
-    qri_peer:remove(qri_peer:parse_qs(Req)),
+    qri_peer:remove(qri_peer:parse_qs(Req), self()),
     ok.

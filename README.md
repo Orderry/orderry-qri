@@ -30,7 +30,7 @@ Infrastructure
 
 Quick Start
 ==============
-```
+```bash
     $ git clone https://github.com/Orderry/orderry-qri.git
     $ cd orderry-gri
     $ mv raven.config.example raven.config

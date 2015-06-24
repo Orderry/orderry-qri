@@ -30,9 +30,10 @@ Infrastructure
 
 Quick Start
 ==============
-.. code-block:: bash
+```
     $ git clone https://github.com/Orderry/orderry-qri.git
     $ cd orderry-gri
     $ mv raven.config.example raven.config
     # In raven.config set your dsn.
     $ sh start.sh
+ ```

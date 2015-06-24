@@ -14,6 +14,14 @@ start() ->
     application:start(ranch),
     application:start(cowlib),
     application:start(cowboy),
+
+    application:start(asn1),
+    application:start(public_key),
+    application:start(ssl),
+    application:start(inets),
+    application:start(jiffy),
+    application:start(raven),
+
     application:start(qri).
 
 start(_StartType, _StartArgs) ->

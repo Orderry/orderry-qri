@@ -1,8 +1,11 @@
 .rebar
 .erlang.cookie
+.idea
+*.iml
 
 log
 deps
 ebin
 
 erl_crash.dump
+raven.config

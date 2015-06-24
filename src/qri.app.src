@@ -6,7 +6,8 @@
   {applications, [
                   kernel,
                   stdlib,
-                  cowboy
+                  cowboy,
+                  raven
                  ]},
   {mod, { qri_app, []}},
   {env,

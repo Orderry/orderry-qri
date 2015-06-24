@@ -27,3 +27,11 @@ Infrastructure
        | Client_1 | ... | Client_N |
        |----------|     |----------|
 ```
+
+Quick Start
+==============
+1. git clone git@github.com:Orderry/orderry-qri.git
+2. cd orderry-gri
+3. mv raven.config.example raven.config
+4. In raven.config set your dsn.
+5. sh start.sh

@@ -8,43 +8,18 @@
 -define(CHILD(I, Type), {I, {I, start_link, []}, permanent, 5000, Type, [I]}).
 
 -define(ETS_OPTIONS, [set, public, named_table, {keypos, 1}]).
--define(TCP_OPTIONS, [binary, {packet, 0}, {active, false}, {reuseaddr, true}]).
+-define(TCP_OPTIONS, [binary, {packet, asn1}, {active, false}, {reuseaddr, true}]).
 
-
-unpack(Data) ->
-    {Body, Rest} = msgpack:unpack_stream(Data),
-
-    case Rest of
-        not_just_binary ->
-            error;
-
-        incomplete ->
-            error;
-
-        {badarg, _} ->
-            error;
-
-        <<>> ->
-            Body;
-
-        _ ->
-            {Body, Rest}
-    end.
 
 emitter([Peer, Checksum, Message]) ->
     PIDs = qri_peer:get_pids({Peer, Checksum}),
     [PID ! {message, Message} || PID <- PIDs].
 
-courier(error) -> ok;
-courier([Peer, Checksum, Message]) -> emitter([Peer, Checksum, Message]);
-courier({Body, Rest}) ->
-    emitter(Body),
-    courier(unpack(Rest)).
-
 loop(Socket) ->
     case gen_tcp:recv(Socket, 0) of
         {ok, Data} ->
-            courier(unpack(Data)),
+            {ok, {'Message', Peer, Checksum, Message}} = 'Ber':decode('Message', Data),
+            emitter([Peer, Checksum, Message]),
             loop(Socket);
 
         {error, closed} ->

@@ -1,0 +1,10 @@
+Ber DEFINITIONS IMPLICIT TAGS ::=
+
+BEGIN
+EXPORTS Message;
+
+Message ::= SEQUENCE {
+        peer OCTET STRING,
+        checksum OCTET STRING,
+        message OCTET STRING }
+END

@@ -5,7 +5,6 @@ UNAME_S=$(shell uname -s)
 _help_:
 	@echo make clean - clean project
 	@echo make update - update all project deps
-	@echo make release - build QRI release
 
 
 clean:

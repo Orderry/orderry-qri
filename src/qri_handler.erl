@@ -12,7 +12,7 @@ init(Req, Opts) ->
         {<<"Cache-Control">>, <<"no-cache">>},
         {<<"access-control-allow-origin">>, <<"*">>},
         {<<"access-control-allow-methods">>, <<"*">>},
-        {<<"Connection">>, <<"Keep-Alive">>}
+        {<<"connection">>, <<"keep-alive">>}
     ],
     Req2 = cowboy_req:chunked_reply(200, Headers, Req),
 

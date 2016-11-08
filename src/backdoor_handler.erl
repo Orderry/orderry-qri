@@ -40,10 +40,10 @@ to_json(Req, State) ->
     end,
   {jsone:encode(Resp1), Req, State}.
 from_plain(Req, State) ->
-  {ok, KeyValues, _} = cowboy_req:body_qs(Req),
+  {ok, KeyValues, Req1} = cowboy_req:body_qs(Req),
   #{<<"type">> := Type, <<"message">> := Message} = maps:from_list(KeyValues),
   ok = herald:call({set, Type, Message}),
-  {true, Req, State}.
+  {true, Req1, State}.
 
 delete_resource(Req, State) ->
   {ok, KeyValues, _} = cowboy_req:body_qs(Req),

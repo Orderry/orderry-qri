@@ -18,7 +18,7 @@ call(M) ->
   gen_server:call(?MODULE, M).
 
 
--define(BROADCAST_TIMEOUT, 5000).
+-define(BROADCAST_TIMEOUT, 30000).
 
 init(_Args) ->
   {ok, maps:new()}.
@@ -26,11 +26,14 @@ init(_Args) ->
 handle_info(broadcast, State) when map_size(State) == 0 ->
   {noreply, State};
 handle_info(broadcast, State) ->
-  AllPids = qri_peer:get_pids('ALL_PEERS'),
-  lists:foreach(fun(Message) ->
-    [Pid ! {message, Message} || Pid <- AllPids]
-  end, maps:values(State)),
-  erlang:send_after(?BROADCAST_TIMEOUT, self(), broadcast),
+  Self = self(),
+  spawn_link(fun() ->
+    AllPids = qri_peer:get_pids('ALL_PEERS'),
+    lists:foreach(fun(Message) ->
+      [Pid ! {message, Message} || Pid <- AllPids]
+    end, maps:values(State)),
+    erlang:send_after(?BROADCAST_TIMEOUT, Self, broadcast)
+  end),
   {noreply, State}.
 
 handle_call({get, Type}, _From, State) ->

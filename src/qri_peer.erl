@@ -49,13 +49,7 @@ get_pids('ALL_PEERS') ->
         [] ->
             [];
         ListOfSomething when is_list(ListOfSomething) ->
-            lists:foldl(
-                fun(Pid, Acc) when is_pid(Pid) ->
-                    [Pid | Acc];
-                (ListPids, Acc) when is_list(ListPids) ->
-                    lists:merge(ListPids, Acc)
-                end,
-                [], ListOfSomething)
+            lists:flatten(ListOfSomething)
     end;
 get_pids({Peer, Checksum}) ->
     Elements = ets:lookup(peers, Peer),

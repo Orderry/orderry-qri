@@ -65,4 +65,4 @@ init([]) ->
 
     timer:apply_interval(timer:seconds(?TICK_INTERVAL), qri_sup, ticks_emitter, []),
 
-    {ok, { {one_for_one, 5, 10}, []} }.
+    {ok, { {one_for_one, 5, 10}, [?CHILD(herald, worker)]} }.

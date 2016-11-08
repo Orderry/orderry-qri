@@ -44,6 +44,19 @@ parse_qs(Req) ->
 %% Return PID which is assigned to the given Peer, or returns undefined if Peer
 %%  does not exists or has an invalid Checksum.
 get_pids(undefined) -> [];
+get_pids('ALL_PEERS') ->
+    case ets:select(peers, [{{'$1','$2','$3'},[],['$3']}]) of
+        [] ->
+            [];
+        ListOfSomething when is_list(ListOfSomething) ->
+            lists:foldl(
+                fun(Pid, Acc) when is_pid(Pid) ->
+                    [Pid | Acc];
+                (ListPids, Acc) when is_list(ListPids) ->
+                    lists:merge(ListPids, Acc)
+                end,
+                [], ListOfSomething)
+    end;
 get_pids({Peer, Checksum}) ->
     Elements = ets:lookup(peers, Peer),
 

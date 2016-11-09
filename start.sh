@@ -6,4 +6,4 @@ env HOME=.
 export HOME=.
 
 rebar compile
-erl -sname $SNAME -pa ebin deps/*/ebin -s qri_app -config raven
+erl -sname $SNAME -pa ebin deps/*/ebin -s qri_app -config raven +K true

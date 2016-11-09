@@ -35,5 +35,6 @@ Quick Start
     $ cd orderry-gri
     $ mv raven.config.example raven.config
     # In raven.config set your dsn.
+    $ make update
     $ sh start.sh
  ```

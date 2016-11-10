@@ -44,7 +44,7 @@ parse_qs(Req) ->
 %% Return PID which is assigned to the given Peer, or returns undefined if Peer
 %%  does not exists or has an invalid Checksum.
 get_pids(undefined) -> [];
-get_pids('ALL_PEERS') ->
+get_pids(all_peers) ->
     case ets:select(peers, [{{'$1','$2','$3'},[],['$3']}]) of
         [] ->
             [];

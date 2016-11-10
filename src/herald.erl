@@ -11,14 +11,17 @@
   handle_call/3
 ]).
 
+-define(BROADCAST_TIMEOUT, 30000).
+
+%% public
+
 start_link() ->
   gen_server:start_link({local, ?MODULE}, ?MODULE, {}, []).
 
 call(M) ->
   gen_server:call(?MODULE, M).
 
-
--define(BROADCAST_TIMEOUT, 30000).
+%% callbacks
 
 init(_Args) ->
   {ok, maps:new()}.
@@ -28,7 +31,7 @@ handle_info(broadcast, State) when map_size(State) == 0 ->
 handle_info(broadcast, State) ->
   Self = self(),
   spawn_link(fun() ->
-    AllPids = qri_peer:get_pids('ALL_PEERS'),
+    AllPids = qri_peer:get_pids(all_peers),
     lists:foreach(fun(Message) ->
       [Pid ! {message, Message} || Pid <- AllPids]
     end, maps:values(State)),
@@ -39,17 +42,19 @@ handle_info(broadcast, State) ->
 handle_call({get, Type}, _From, State) ->
   {reply, maps:get(Type, State, false), State};
 
+handle_call({set, Type, Message}, _From, State) when map_size(State) == 0 ->
+  self() ! broadcast,
+  {reply, ok, set(Type, Message, State)};
 handle_call({set, Type, Message}, _From, State) ->
-  if map_size(State) == 0 ->
-    self() ! broadcast;
-    true -> okay end,
-  Message1 = <<Type/binary, Message/binary>>,
-  {reply, ok, maps:put(Type, Message1, State)};
+  {reply, ok, set(Type, Message, State)};
 
 handle_call({delete, Type}, _From, State) ->
-  AllPids = qri_peer:get_pids('ALL_PEERS'),
+  AllPids = qri_peer:get_pids(all_peers),
   [Pid ! {message, <<Type/binary, "delete">>} || Pid <- AllPids],
-  {reply, ok, maps:remove(Type, State)};
+  {reply, ok, maps:remove(Type, State)}.
 
-handle_call(_Comm, _From, State) ->
-  {reply, ok, State}.
+%% private
+
+set(Type, Message, State) ->
+  Message1 = <<Type/binary, Message/binary>>,
+  maps:put(Type, Message1, State).

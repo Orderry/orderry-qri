@@ -21,7 +21,8 @@ start() ->
     application:start(ssl),
     application:start(inets),
     application:start(jiffy),
-    % application:start(raven),
+    application:start(jsone),
+    application:start(raven),
 
     application:start(qri).
 

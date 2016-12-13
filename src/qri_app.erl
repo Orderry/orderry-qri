@@ -6,7 +6,7 @@
 -define(ROUTES, [
     {'_', [
         {"/stream", qri_handler, []},
-        {"/backdoor", backdoor_handler, []}
+        {"/backdoor", herald_rest_handler, []}
     ]}
 ]).
 

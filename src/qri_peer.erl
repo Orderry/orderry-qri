@@ -3,6 +3,7 @@
 -export([generate_tick_id/0]).
 -export([parse_qs/1]).
 -export([get_pids/1]).
+-export([get_all_peers_pids/0]).
 -export([remove/2]).
 -export([register/2]).
 
@@ -44,13 +45,6 @@ parse_qs(Req) ->
 %% Return PID which is assigned to the given Peer, or returns undefined if Peer
 %%  does not exists or has an invalid Checksum.
 get_pids(undefined) -> [];
-get_pids(all_peers) ->
-    case ets:select(peers, [{{'$1','$2','$3'},[],['$3']}]) of
-        [] ->
-            [];
-        ListOfSomething when is_list(ListOfSomething) ->
-            lists:flatten(ListOfSomething)
-    end;
 get_pids({Peer, Checksum}) ->
     Elements = ets:lookup(peers, Peer),
 
@@ -70,6 +64,14 @@ get_pids({_Peer, Checksum}, Element) ->
 
         true ->
             element(?C_POS_PID, Element)
+    end.
+
+get_all_peers_pids() ->
+    case ets:select(peers, [{{'$1','$2','$3'},[],['$3']}]) of
+        [] ->
+            [];
+        ListOfSomething when is_list(ListOfSomething) ->
+            lists:flatten(ListOfSomething)
     end.
 
 remove(undefined, _PID) -> ok;

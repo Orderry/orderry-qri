@@ -13,19 +13,20 @@ Infrastructure
 ==============
 
 ```
- |--------|     |---------|     |--------|
- | Python | ... | Clojure | ... | Haskel |
- |--------|     |---------|     |--------|
+ |--------|     |---------|     |---------|
+ | Python | ... | Clojure | ... | Haskell |
+ |--------|     |---------|     |---------|
          \           |            /
           \          |           /
         |-------------------------|
         | Erlang SSE Proxy Server | <-- Orderry Qri
-        |-------------------------|
-             |               |
-             |               |
-       |----------|     |----------|
-       | Client_1 | ... | Client_N |
-       |----------|     |----------|
+        |-------------------------| <
+             |               |       \
+             |               |        \ http
+       |----------|     |----------|   \
+       | Client_1 | ... | Client_N |    |----------------|
+       |----------|     |----------|    | Management API |
+                                        |----------------|
 ```
 
 Quick Start
@@ -38,3 +39,14 @@ Quick Start
     $ make update
     $ sh start.sh
  ```
+
+Management API
+==============
+GET     %QRI_HOST%/backdoor {type: %MESSAGE_TYPE%} => 
+            200 {type: %MESSAGE_TYPE%, message: [undefined|%THE_MESSAGE%]}
+            
+POST    %QRI_HOST%/backdoor {type: %MESSAGE_TYPE%, message: %THE_MESSAGE%} =>
+            204
+
+DELETE  %QRI_HOST%/backdoor {type: %MESSAGE_TYPE%} =>
+            204

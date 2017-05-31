@@ -33,6 +33,7 @@ loop(Socket) ->
     case gen_tcp:recv(Socket, 0) of
         {ok, Data} ->
             {ok, {'Message', Peer, Checksum, Message}} = 'Ber':decode('Message', Data),
+            % io:format("Got message (peer: ~20.s): ~s~n", [Peer, Message]),
             emitter([Peer, Checksum, Message]),
             loop(Socket);
 
@@ -50,6 +51,7 @@ listen() ->
 
     % Listen socket connection and push notifications to the relative PIDs.
     spawn_link(fun() ->
+        io:format("Starting listen for messages at port ~p ...~n", [SPort]),
         {ok, LSock} = gen_tcp:listen(SPort, ?TCP_OPTIONS),
         accept(LSock)
     end).

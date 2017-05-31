@@ -34,7 +34,8 @@ start(_StartType, _StartArgs) ->
     ProtoOpts = [{env, [{dispatch, Dispatch}]}],
 
     cowboy:start_http(http, ?C_ACCEPTORS, TransOpts, ProtoOpts),
-    io:format("Starting at port ~p\n", [Port]),
+    io:format("~n"),
+    io:format("Starting web server at port ~p ...~n", [Port]),
 
     qri_sup:start_link().
 

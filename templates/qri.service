@@ -1,0 +1,11 @@
+[Unit]
+Description=Orderry QRI service
+
+[Service]
+Environment=HOME={{ HOME }}
+WorkingDirectory={{ HOME }}
+ExecStart={{ HOME }}/run.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

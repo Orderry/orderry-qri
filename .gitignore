@@ -1,11 +1,27 @@
-.rebar
+# ===================================================================
+# QRI custom
+# ===================================================================
+
+rebar
+
+log
+ebin
+
 .erlang.cookie
 .idea
 *.iml
 
-log
-deps
-ebin
+# ===================================================================
+# Defaults for Erlang from Github
+# ===================================================================
 
+.eunit
+deps
+*.o
+*.beam
+*.plt
 erl_crash.dump
-raven.config
+ebin/*.beam
+rel/example_project
+.concrete/DEV_MODE
+.rebar

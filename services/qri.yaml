@@ -1,0 +1,10 @@
+
+configs:
+
+  dev:
+    description: Orderry QRI
+    config: dev
+
+  prod:
+    description: Orderry QRI
+    config: prod

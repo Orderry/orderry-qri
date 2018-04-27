@@ -1,16 +1,22 @@
-Orderry SSE server.
-===================
-This is only a part of our infrastructure for easy integration of push notifications between Server-side and Client-side. Our infrastructure are based on [SSE](http://www.w3.org/TR/eventsource/#abstract) interface.
 
-The purpose for creating this library was the need to support data synchronization in cabinets of our customers. Our infrastructure must support synchronization between Server-side frameworks, also including mobile applications, and Client-side SPA.
+# Orderry SSE server
 
-Read more about other Qri components:
+This is only a part of our infrastructure for easy integration of push notifications
+between Server-side and Client-side.
+Our infrastructure are based on [SSE](http://www.w3.org/TR/eventsource/#abstract) interface.
+
+The purpose for creating this library was the need to support data synchronization
+in cabinets of our customers.
+Our infrastructure must support synchronization between Server-side frameworks,
+also including mobile applications, and Client-side SPA.
+
+Read more about other QRI components:
 
 1. [JS interface](https://github.com/Orderry/qri-js);
 2. [Python lib](https://github.com/Orderry/qri-py);
 
-Infrastructure
-==============
+
+# Infrastructure
 
 ```
  |--------|     |---------|     |---------|
@@ -29,22 +35,28 @@ Infrastructure
                                         |----------------|
 ```
 
-Quick Start
-==============
-```bash
-    $ git clone https://github.com/Orderry/orderry-qri.git
-    $ cd orderry-gri
-    $ mv raven.config.example raven.config
-    # In raven.config set your dsn.
-    $ make update
-    $ sh start.sh
- ```
+# Prerequisites
 
-Management API
-==============
-GET     %QRI_HOST%/backdoor {type: %MESSAGE_TYPE%} => 
+Install Erlang runtime.
+Install Python 3.6.5 under pyenv, install pipenv.
+
+
+# Quick Start
+
+Edit appropriate .config if needed.
+
+```bash
+$ make setup
+$ make build
+$ make run
+```
+
+
+# Management API
+
+GET     %QRI_HOST%/backdoor {type: %MESSAGE_TYPE%} =>
             200 {type: %MESSAGE_TYPE%, message: [undefined|%THE_MESSAGE%]}
-            
+
 POST    %QRI_HOST%/backdoor {type: %MESSAGE_TYPE%, message: %THE_MESSAGE%} =>
             204
 

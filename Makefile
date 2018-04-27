@@ -1,36 +1,41 @@
-DEPS_EXISTS=$(shell [ -d "deps" ] && echo 1 || echo 0)
-UNAME_S=$(shell uname -s)
+
+# Self-Documented Makefile approach, borrowed from: https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
+
+.DEFAULT_GOAL := help
+
+help:
+	@grep -E '^[a-zA-Z_-.]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 
-_help_:
-	@echo make clean - clean project
-	@echo make update - update all project deps
+cleanall: clean ## Clean project and rebar
+	@rm -rf rebar
 
 
-clean:
-	rebar clean
-
-update:
-ifeq ($(DEPS_EXISTS), 1)
-	rebar update-deps
-else
-	rebar get-deps
-endif
+clean:  ## Clean project
+	@rm -rf .rebar
+	@rm -rf deps
+	@rm -rf ebin
+	@rm -rf .erlang.cookie
+	@rm -rf erl_crash.dump
 
 
-SERVICE_TAG = $(service)
-SERVICE_HOME = $(CURDIR)
-SERVICE_TEMPLATE = $(CURDIR)/templates/$(SERVICE_TAG).service
-TARGET_FILENAME = orderry.$(SERVICE_TAG).service
-DESTINATION = /etc/systemd/system
-DESTINATION_FILE = $(DESTINATION)/$(TARGET_FILENAME)
+setup: cleanall ## Make build/runtime environment
+	@echo "Making build/runtime environment..."
+	@echo "Making Python environment..."
+	@pipenv sync --bare --dev
+	# Temporal pip downgrade for Pipenv compatibility
+	@pipenv run pip install pip==9.0.2
+	@pipenv check
+	@echo "Installing rebar..."
+	git clone git://github.com/rebar/rebar.git
+	cd rebar && ./bootstrap
 
-install.systemd: ## Install systemd service from template: sudo make install.systemd service=<name>
-	@echo "Installing [$(SERVICE_TAG)] as systemd service ..."
-	@echo "Home dir: $(SERVICE_HOME)"
-	@echo "Template: $(SERVICE_TEMPLATE)"
-	@echo "=> $(DESTINATION_FILE)"
-	@rm -f $(DESTINATION_FILE)
-	@sed 's|{{ HOME }}|$(SERVICE_HOME)|g' <$(SERVICE_TEMPLATE) >$(DESTINATION_FILE)
-	@systemctl daemon-reload
-	@echo "Finished"
+
+build: clean  ## Build project
+	./rebar/rebar get-deps
+	#./rebar/rebar update-deps
+	./rebar/rebar compile
+
+
+run:  ## Start QRI service in foreground with dev.config
+	erl -sname orderry-qri -pa ebin deps/*/ebin -s qri_app -config dev +K true

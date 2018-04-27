@@ -1,0 +1,19 @@
+[Unit]
+Description={{ description }}
+
+[Service]
+Restart=always
+RestartSec=2
+RuntimeMaxSec=1800
+
+Environment=HOME={{ HOME }}
+WorkingDirectory={{ HOME }}
+
+ExecStartPre=/bin/mkdir -p {{ LOGGING_DIR }}
+ExecStart=/bin/bash -c 'exec \
+  /usr/bin/erl -sname orderry-qri -pa ebin deps/*/ebin -s qri_app -config {{ config }} +K true -noinput \
+  >> {{ LOGGING_DIR }}/{{ SERVICE }}.{{ CONFIG }}.log \
+  2>&1'
+
+[Install]
+WantedBy=multi-user.target

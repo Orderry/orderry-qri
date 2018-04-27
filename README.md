@@ -16,7 +16,7 @@ Read more about other QRI components:
 2. [Python lib](https://github.com/Orderry/qri-py);
 
 
-# Infrastructure
+## Infrastructure
 
 ```
  |--------|     |---------|     |---------|
@@ -35,13 +35,13 @@ Read more about other QRI components:
                                         |----------------|
 ```
 
-# Prerequisites
+## Prerequisites
 
 Install Erlang runtime.
 Install Python 3.6.5 under pyenv, install pipenv.
 
 
-# Quick Start
+## Quick Start
 
 Edit appropriate .config if needed.
 
@@ -52,7 +52,7 @@ $ make run
 ```
 
 
-# Management API
+## Management API
 
 GET     %QRI_HOST%/backdoor {type: %MESSAGE_TYPE%} =>
             200 {type: %MESSAGE_TYPE%, message: [undefined|%THE_MESSAGE%]}

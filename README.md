@@ -54,6 +54,7 @@ $ make run
 
 ## Management API
 
+```
 GET     %QRI_HOST%/backdoor {type: %MESSAGE_TYPE%} =>
             200 {type: %MESSAGE_TYPE%, message: [undefined|%THE_MESSAGE%]}
 
@@ -62,3 +63,4 @@ POST    %QRI_HOST%/backdoor {type: %MESSAGE_TYPE%, message: %THE_MESSAGE%} =>
 
 DELETE  %QRI_HOST%/backdoor {type: %MESSAGE_TYPE%} =>
             204
+```

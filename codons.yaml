@@ -1,0 +1,46 @@
+
+project:
+  tag: qri
+
+meta:
+  # format: python
+
+codestyle:
+  commands:
+    # - make codestyle
+
+build:
+  commands:
+    # - make build
+
+test:
+  commands:
+    # - make test
+
+release:
+  include:
+    - prod.config
+  publish:
+    s3bucket: orderry
+    # localdir: ..
+
+setup:
+  commands:
+    - make setup
+
+# [service] and [config] variables will be formatted into command string
+# will run with sudo
+service:
+  load:
+    commands:
+      - pipenv run ./service.py install {service} {config}
+      - pipenv run ./service.py start {service} {config}
+  unload:
+    commands:
+      - pipenv run ./service.py uninstall {service} {config}
+
+services:
+  server:
+    configs:
+      - dev
+      - prod

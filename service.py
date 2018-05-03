@@ -70,7 +70,7 @@ def install(service, config):
         print('ERROR:', error, file=sys.stderr)
         sys.exit(1)
     try:
-        if service == 'qri':
+        if service == 'server':
             service_def = render_template('services/templates/qri.service', settings)
             systemd_name, systemd_path = derive_systemd_info(service, config)
             print('Installing to:', systemd_path)

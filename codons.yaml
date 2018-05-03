@@ -6,16 +6,16 @@ meta:
   # format: python
 
 codestyle:
-  commands:
-    # - make codestyle
+  # commands:
+  #   - make codestyle
 
 build:
-  commands:
-    # - make build
+  # commands:
+  #   - make build
 
 test:
-  commands:
-    # - make test
+  # commands:
+  #   - make test
 
 release:
   include:

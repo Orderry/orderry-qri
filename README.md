@@ -35,10 +35,21 @@ Read more about other QRI components:
                                         |----------------|
 ```
 
+
 ## Prerequisites
 
 Install Erlang runtime.
 Install Python 3.6.5 under pyenv, install pipenv.
+
+Ensure that pyenv shims come first at PATH.
+Place these lines
+
+    export PATH="~/.pyenv/bin:$PATH"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+
+as last ones in `.bashrc` for interactive sessions **and**
+also in `.bash_profile` for non-interactive sessions.
 
 
 ## Quick Start

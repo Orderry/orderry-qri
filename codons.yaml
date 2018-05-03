@@ -27,6 +27,7 @@ release:
 setup:
   commands:
     - make setup
+    - make build
 
 # [service] and [config] variables will be formatted into command string
 # will run with sudo

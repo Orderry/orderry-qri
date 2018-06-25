@@ -24,7 +24,7 @@ setup: cleanall ## Make build/runtime environment
 	@echo "Making Python environment..."
 	@pipenv sync --bare --dev
 	# Temporal pip downgrade for Pipenv compatibility
-	@pipenv run pip install pip==9.0.2
+	@pipenv run pip install pip==9.0.1
 	@pipenv check
 	@echo "Installing rebar..."
 	git clone git://github.com/rebar/rebar.git

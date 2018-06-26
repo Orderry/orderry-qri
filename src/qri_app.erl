@@ -22,7 +22,7 @@ start() ->
     application:start(inets),
     application:start(jiffy),
     application:start(jsone),
-    application:start(raven),
+    % application:start(raven),
 
     application:start(qri).
 

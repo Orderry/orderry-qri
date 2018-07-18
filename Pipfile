@@ -12,3 +12,5 @@ click = "*"
 jinja2 = "*"
 
 [dev-packages]
+pycodestyle = "*"
+"ribosome.tool" = "*"

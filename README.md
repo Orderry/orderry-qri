@@ -1,5 +1,5 @@
 
-# Orderry SSE server
+# Orderry SSE Server
 
 This is only a part of our infrastructure for easy integration of push notifications
 between Server-side and Client-side.
@@ -38,8 +38,11 @@ Read more about other QRI components:
 
 ## Prerequisites
 
-Install Erlang runtime.
-Install Python 3.6.5 under pyenv, install pipenv.
+Install Erlang runtime. *TODO: Describe Erlang setup in details.*
+
+Install [pyenv](https://github.com/pyenv/pyenv):
+packages needed to build Python by [this guide](https://askubuntu.com/a/865644)
+and then use [pyenv-installer](https://github.com/pyenv/pyenv-installer#installation--update--uninstallation).
 
 Ensure that pyenv shims come first at PATH.
 Place these lines
@@ -51,16 +54,22 @@ Place these lines
 as last ones in `.bashrc` for interactive sessions **and**
 also in `.bash_profile` for non-interactive sessions.
 
+Install Python 3.6.5: `pyenv install 3.6.5`.
 
-## Quick Start
+Install [Pipenv](https://github.com/pypa/pipenv)
+into 3.6.5 distribution: `pip install pipenv`.
 
-Edit appropriate .config if needed.
 
-```bash
-$ make setup
-$ make build
-$ make run
-```
+## Getting started
+
+Setup runtime and build environment:
+
+    $ make setup
+    $ make build
+
+Start server for development in foreground:
+
+    $ make run
 
 
 ## Management API

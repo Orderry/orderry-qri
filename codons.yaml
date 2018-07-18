@@ -2,26 +2,28 @@
 project:
   tag: qri
 
+tag_policy: ribosome.default_tag_policy
+
 meta:
-  # format: python
+  format: python
 
-codestyle:
-  # commands:
-  #   - make codestyle
+# codestyle:
+#   commands:
+#     - make codestyle
 
-build:
-  # commands:
-  #   - make build
+# build:
+#   commands:
+#     - make build
 
-test:
-  # commands:
-  #   - make test
+# test:
+#   commands:
+#     - make test
 
 release:
   include:
     - prod.config
   publish:
-    s3bucket: orderry
+    s3bucket: ro-releases
     # localdir: ..
 
 setup:
@@ -29,14 +31,14 @@ setup:
     - make setup
     - make build
 
-# [service] and [config] variables will be formatted into command string
-# will run with sudo
 service:
   load:
+    # will run with sudo
     commands:
       - pipenv run ./service.py install {service} {config}
       - pipenv run ./service.py start {service} {config}
   unload:
+    # will run with sudo
     commands:
       - pipenv run ./service.py uninstall {service} {config}
 

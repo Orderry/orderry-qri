@@ -29,6 +29,11 @@ setup: cleanall  ## Make build/runtime environment
 	cd rebar && ./bootstrap
 
 
+codestyle:  ## Check code style
+	@echo "Checking code style..."
+	@pipenv run pycodestyle *.py --ignore=E501
+
+
 build: clean  ## Build project
 	./rebar/rebar get-deps
 	#./rebar/rebar update-deps

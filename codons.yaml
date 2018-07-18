@@ -7,9 +7,9 @@ tag_policy: ribosome.default_tag_policy
 meta:
   format: python
 
-# codestyle:
-#   commands:
-#     - make codestyle
+codestyle:
+  commands:
+    - make codestyle
 
 # build:
 #   commands:
@@ -21,7 +21,6 @@ meta:
 
 release:
   include:
-    - prod.config
   publish:
     s3bucket: ro-releases
     # localdir: ..

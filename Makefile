@@ -41,4 +41,4 @@ build: clean  ## Build project
 
 
 run:  ## Start QRI service in foreground with dev.config
-	erl -sname orderry-qri -pa ebin deps/*/ebin -s qri_app -config dev +K true
+	erl -sname orderry-qri -pa ebin deps/*/ebin -s qri_app +K true

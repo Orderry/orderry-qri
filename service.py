@@ -27,8 +27,16 @@ def load_settings(service, config):
             return None, 'Service descriptor invalid or empty'
         if config not in descriptor['configs']:
             return None, 'Config definition not found: {}'.format(config)
-        settings = descriptor.get('common', {})
-        settings = {k: v.format(service=service, config=config) for k, v in settings.items()}
+
+        def deep_format(obj):
+            if isinstance(obj, dict):
+                return {k: deep_format(v) for k, v in obj.items()}
+            if isinstance(obj, str):
+                return obj.format(service=service, config=config)
+            return obj
+
+        settings_common = descriptor.get('common', {})
+        settings = deep_format(settings_common)
         settings.update(descriptor['configs'][config] or {})
         settings['SERVICE'] = service
         settings['CONFIG'] = config

@@ -19,8 +19,18 @@ clean:  ## Clean project
 	@rm -rf erl_crash.dump
 
 
-setup: cleanall  ## Make build/runtime environment
+setup: cleanall  ## Make runtime environment
 	@echo "Making build/runtime environment..."
+	@echo "Making Python environment..."
+	@pipenv sync --bare
+	@pipenv check
+	@echo "Installing rebar..."
+	git clone git://github.com/rebar/rebar.git
+	cd rebar && ./bootstrap
+
+
+devsetup: cleanall  ## Make build/runtime environment for development
+	@echo "Making build/runtime environment for development..."
 	@echo "Making Python environment..."
 	@pipenv sync --bare --dev
 	@pipenv check
@@ -40,5 +50,5 @@ build: clean  ## Build project
 	./rebar/rebar compile
 
 
-run:  ## Start QRI service in foreground with dev.config
+run:  ## Start QRI service in foreground
 	erl -sname orderry-qri -pa ebin deps/*/ebin -s qri_app +K true

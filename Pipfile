@@ -7,9 +7,9 @@ name = "pypi"
 python_full_version = "3.6.5"
 
 [packages]
-"ruamel.yaml" = "*"
-click = "*"
-jinja2 = "*"
+"ruamel.yaml" = "~=0.15.55"
+click = "~=6.7"
+jinja2 = "~=2.10"
 
 [dev-packages]
 pycodestyle = "*"
